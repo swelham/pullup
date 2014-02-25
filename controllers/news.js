@@ -665,9 +665,66 @@ exports.postNews = function(req, res, next) {
 
 };
 
-/**
- * PUT /news/:item
- * Vote up a news item.
- * @param {number} amount Which direction and amount to vote up a news item (limited to +1 for now)
- */
-// See votes.js
+exports.edit = function(req, res, next) {
+  NewsItem
+    .findById(req.params.id)
+    .populate('poster')
+    .exec(function (err, newsItem) {
+      if (err) return next(err);
+      if (!newsItem) {
+        req.flash('errors', { msg: 'News item not found.' });
+        return res.redirect('/news');
+      }
+      
+      var posttype = '';
+
+      if (newsItem.source === 'pullup.io' && 
+          newsItem.url.indexOf('/news/') === 0) {
+        posttype = 'self';
+      }
+
+      res.render('news/edit', {
+        posttype: posttype,
+        newsItem: {
+          source: newsItem.source,
+          summary: newsItem.summary,
+          title: newsItem.title,
+          url: newsItem.url
+        }
+      });
+    });
+
+    /*
+    async.parallel({
+      votes: function (cb) {
+        addVotesToNewsItems(newsItem, req.user, cb);
+      },
+      comments: function (cb) {
+        Comment
+        .find({
+          item: newsItem._id,
+          itemType: 'news'
+        })
+        .populate('poster')
+        .exec(cb);
+      }
+    }, function (err, results) {
+
+      if(err) return next(err);
+
+      _.each(results.comments, function (comment,i,l) {
+        comment.contents = marked(comment.contents);
+      });
+
+      newsItem.summary = marked(newsItem.summary);
+
+      res.render('news/show', {
+        title: newsItem.title,
+        tab: 'news',
+        item: newsItem,
+        comments: results.comments
+      });
+    });
+
+  });*/
+}

@@ -170,6 +170,7 @@ app.post('/news/:id/comments/:comment_id/delete', passportConf.isAuthenticated, 
 app.post('/news/:id', votesController.voteFor('news', '/'));
 app.get('/news/user/:id', newsController.userNews);
 app.get('/news/ajaxGetUserGithubData/:id', newsController.ajaxGetUserGithubData);
+app.get('/news/:id/edit', newsController.edit);
 
 /**
  * Issues Routes
