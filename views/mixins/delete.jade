@@ -1,7 +1,8 @@
 mixin delete(owner, url)
   - var modalId = url.replace(/\//g, "")
   if user && user.username == owner.username
-    button(type='button', data-toggle='modal', data-target='##{modalId}' class='delete btn btn-danger btn-xs pull-right', title='Delete') ×
+    a.link-action.link-danger(href='#' data-toggle='modal', data-target='##{modalId}' title='Delete')
+      i.fa.fa-trash-o
     div.modal.fade(id=modalId)
       div.modal-dialog
         div.modal-content

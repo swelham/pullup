@@ -1,4 +1,5 @@
 extends ../layout
+include ../mixins/edit
 include ../mixins/delete
 
 block content
@@ -7,12 +8,16 @@ block content
 
     .page-header
         h3
-            a(href=item.url)= item.title
-            if item.summary && ! item.isSelfPost()
-                | &nbsp;
-                a(href="#", class="show-summary")
-                    | ...
-            +delete(item.poster, '/news/' + item._id + '/delete')
+          a(href=item.url)= item.title
+          if item.summary && ! item.isSelfPost()
+              | &nbsp;
+              a(href="#", class="show-summary")
+                  | ...
+          ul(class="list-unstyled list-inline pull-right")
+            li
+              +edit(item.poster, '/news/' + item._id + '/edit')
+            li    
+              +delete(item.poster, '/news/' + item._id + '/delete')
         h4
           div(class="item-summary #{item.isSelfPost() ? '' : 'hidden'}")!= item.summary
         = 'submitted '

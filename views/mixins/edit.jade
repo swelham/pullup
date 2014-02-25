@@ -1,0 +1,4 @@
+mixin edit(owner, url)
+  if user && user.username == owner.username
+    a.link-action(href=url, title='Edit')
+        i.fa.fa-edit
